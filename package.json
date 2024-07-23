@@ -33,7 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.27.6",
-    "@napi-rs/cli": "^2.18.3",
+    "@napi-rs/cli": "^2.18.4",
     "ava": "^6.0.1",
     "typescript": "^5.5.3"
   },
@@ -45,8 +45,10 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --platform --release --dts binding.d.ts --js binding.js && tsc",
+    "build": "yarn build:crate && yarn build:ts",
+    "build:crate": "napi build --platform --release --dts binding.d.ts --js binding.js",
     "build:debug": "napi build --platform",
+    "build:ts": "tsc",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "universal": "napi universal",

@@ -27,61 +27,61 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: yarn build --target x86_64-apple-darwin
+            build: yarn build:crate --target x86_64-apple-darwin
           - host: windows-latest
-            build: yarn build --target x86_64-pc-windows-msvc
+            build: yarn build:crate --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
-              yarn build --target i686-pc-windows-msvc
+              yarn build:crate --target i686-pc-windows-msvc && yarn build:ts
               yarn test
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            build: yarn build --target x86_64-unknown-linux-gnu
+            build: yarn build:crate --target x86_64-unknown-linux-gnu
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: yarn build --target x86_64-unknown-linux-musl
+            build: yarn build:crate --target x86_64-unknown-linux-musl
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: yarn build --target aarch64-apple-darwin
+            build: yarn build:crate --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
-            build: yarn build --target aarch64-unknown-linux-gnu
+            build: yarn build:crate --target aarch64-unknown-linux-gnu
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf -y
-            build: yarn build --target armv7-unknown-linux-gnueabihf
+            build: yarn build:crate --target armv7-unknown-linux-gnueabihf
           - host: ubuntu-latest
             target: armv7-unknown-linux-musleabihf
-            build: yarn build --target armv7-unknown-linux-musleabihf
+            build: yarn build:crate --target armv7-unknown-linux-musleabihf
           - host: ubuntu-latest
             target: aarch64-linux-android
-            build: yarn build --target aarch64-linux-android
+            build: yarn build:crate --target aarch64-linux-android
           - host: ubuntu-latest
             target: armv7-linux-androideabi
-            build: yarn build --target armv7-linux-androideabi
+            build: yarn build:crate --target armv7-linux-androideabi
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
             build: |-
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
-              yarn build --target aarch64-unknown-linux-musl
+              yarn build:crate --target aarch64-unknown-linux-musl
           - host: windows-latest
             target: aarch64-pc-windows-msvc
-            build: yarn build --target aarch64-pc-windows-msvc
+            build: yarn build:crate --target aarch64-pc-windows-msvc
           - host: ubuntu-latest
             target: riscv64gc-unknown-linux-gnu
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-riscv64-linux-gnu -y
-            build: yarn build --target riscv64gc-unknown-linux-gnu
+            build: yarn build:crate --target riscv64gc-unknown-linux-gnu
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -224,6 +224,8 @@ jobs:
         with:
           name: bindings-${{ matrix.settings.target }}
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -254,6 +256,8 @@ jobs:
         with:
           name: bindings-x86_64-unknown-linux-gnu
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -286,6 +290,8 @@ jobs:
         with:
           name: bindings-x86_64-unknown-linux-musl
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -309,6 +315,8 @@ jobs:
         with:
           name: bindings-aarch64-unknown-linux-gnu
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -343,6 +351,8 @@ jobs:
         with:
           name: bindings-aarch64-unknown-linux-musl
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -382,6 +392,8 @@ jobs:
         with:
           name: bindings-armv7-unknown-linux-gnueabihf
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -465,6 +477,8 @@ jobs:
       - name: List packages
         run: ls -R ./npm
         shell: bash
+      - name: Build ts
+        run: yarn build:ts
       - name: Publish
         run: |
           npm config set provenance true
