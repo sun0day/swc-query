@@ -3,7 +3,7 @@ use std::{fs::read_to_string};
 use oxc_allocator::Allocator;
 use oxc_parser::Parser;
 use oxc_span::SourceType;
-use oxc_diagnostics::{ NamedSource, Severity};
+use oxc_diagnostics::{ NamedSource, Severity, GraphicalReportHandler};
 
 use crate::error::ScanError;
 
@@ -24,13 +24,17 @@ impl OxcParser {
     })?;
     let source_type = SourceType::from_path(file).unwrap();
     let ret = Parser::new(&self.allocator, &source_text, source_type).parse();
+    let handler = GraphicalReportHandler::new();
+    let mut out = String::new();
 
     if !ret.errors.is_empty() {
       for error in ret.errors {
-        let err = error.with_severity(Severity::Warning).with_source_code(NamedSource::new("a.js", source_text.clone()));
-        println!("{:?}", err);
+        let err = error.with_source_code(NamedSource::new("__test__/fixtures/a.js", source_text.clone()));
+        let _ = handler.render_report(&mut out, err.as_ref());
       }
     }
+
+    println!("{}", out);
 
     Ok(())
   }
