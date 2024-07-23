@@ -1,41 +1,59 @@
-use std::{fs::read_to_string};
+use std::{
+  fs::read_to_string,
+  io::{stdout, BufWriter, Stdout, Write},
+  path::Path
+};
 
+use miette::Report;
 use oxc_allocator::Allocator;
+use oxc_diagnostics::{DiagnosticService, GraphicalReportHandler, OxcDiagnostic};
 use oxc_parser::Parser;
 use oxc_span::SourceType;
-use oxc_diagnostics::{ NamedSource, Severity, GraphicalReportHandler};
 
 use crate::error::ScanError;
 
 pub struct OxcParser {
-  allocator: Allocator,
+  diagnostics: Vec<Report>,
+  writer: BufWriter<Stdout>,
 }
 
 impl OxcParser {
   pub fn new() -> Self {
     Self {
-      allocator: Allocator::default()
+      diagnostics: vec![],
+      writer: BufWriter::new(stdout()),
     }
   }
 
-  pub fn scan_file(&self, file: &str) -> Result<(), ScanError> {
-    let source_text = read_to_string(file).map_err(|err| {
-      ScanError::FileReadError(format!("{}, reading {}", err.to_string(), file))
-    })?;
+  pub fn scan_file(&mut self, file: &str) -> Result<(), ScanError> {
+    let source_text = read_to_string(file)
+      .map_err(|err| ScanError::FileReadError(format!("{}, reading {}", err.to_string(), file)))?;
     let source_type = SourceType::from_path(file).unwrap();
-    let ret = Parser::new(&self.allocator, &source_text, source_type).parse();
+    let allocator = Allocator::default();
+    let ret = Parser::new(&allocator, &source_text, source_type).parse();
+
+    if !ret.errors.is_empty() {
+      self.collect_diagnostics(file, &source_text, ret.errors);
+    }
+
+    Ok(())
+  }
+
+  pub fn report(&mut self) {
     let handler = GraphicalReportHandler::new();
     let mut out = String::new();
 
-    if !ret.errors.is_empty() {
-      for error in ret.errors {
-        let err = error.with_source_code(NamedSource::new("__test__/fixtures/a.js", source_text.clone()));
-        let _ = handler.render_report(&mut out, err.as_ref());
-      }
+    for diagnostic in &self.diagnostics {
+      let _ = handler.render_report(&mut out, diagnostic.as_ref());
     }
 
-    println!("{}", out);
+    let _ = self.writer.write_all(out.as_bytes());
+    self.diagnostics.clear();
+  }
 
-    Ok(())
+  fn collect_diagnostics(&mut self, file: &str, source_text: &str, errors: Vec<OxcDiagnostic>) {
+    let mut diagnostics =
+      DiagnosticService::wrap_diagnostics(Path::new(file), &source_text, errors);
+    self.diagnostics.append(&mut diagnostics.1);
   }
 }

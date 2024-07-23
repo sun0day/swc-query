@@ -2,9 +2,8 @@
 
 mod error;
 mod parser;
+use napi::bindgen_prelude::Buffer;
 use parser::OxcParser;
-use napi::{bindgen_prelude::Buffer};
-
 
 #[macro_use]
 extern crate napi_derive;
@@ -19,7 +18,7 @@ impl Scanner {
   #[napi(constructor)]
   pub fn new() -> Self {
     Self {
-      parser: OxcParser::new()
+      parser: OxcParser::new(),
     }
   }
 
@@ -31,12 +30,14 @@ impl Scanner {
 
     match parse_result {
       Ok(_) => "".as_bytes().into(),
-      Err(err) => serde_json::to_string(&err).unwrap().as_bytes().into()
+      Err(err) => serde_json::to_string(&err).unwrap().as_bytes().into(),
     }
-
-    // println!("{}", parse_result);
 
     // buffer.to_string().as_bytes().into()
   }
-}
 
+  #[napi]
+  pub fn report(&mut self) {
+    self.parser.report();
+  }
+}
