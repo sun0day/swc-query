@@ -2,7 +2,14 @@
   "name": "swc-query",
   "version": "0.0.0",
   "main": "index.js",
+  "module": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "binding.js",
+    "binding.d.ts",
+    "index.js",
+    "index.d.ts"
+  ],
   "napi": {
     "name": "swc-query",
     "triples": {
@@ -27,7 +34,8 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.6",
     "@napi-rs/cli": "^2.18.3",
-    "ava": "^6.0.1"
+    "ava": "^6.0.1",
+    "typescript": "^5.5.3"
   },
   "ava": {
     "timeout": "3m"
@@ -37,7 +45,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
+    "build": "napi build --platform --release --dts binding.d.ts --js binding.js && tsc",
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
