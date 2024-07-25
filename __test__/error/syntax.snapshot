@@ -1,0 +1,7 @@
+
+  x Expected a semicolon or an implicit semicolon after a statement, but found none
+   ,-[__test__/error/syntax.js:1:5]
+ 1 | le1t a = ;
+   :     ^
+   `----
+  help: Try insert a semicolon here

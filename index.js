@@ -13,5 +13,20 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Scanner = void 0;
+const node_process_1 = __importDefault(require("node:process"));
+const binding_1 = require("./binding");
+class Scanner extends binding_1.Scanner {
+    constructor(root = node_process_1.default.cwd()) {
+        super(Buffer.from(root));
+    }
+    scan(file) {
+        return super.scan(Buffer.isBuffer(file) ? file : Buffer.from(file));
+    }
+}
+exports.Scanner = Scanner;
 __exportStar(require("./binding"), exports);
