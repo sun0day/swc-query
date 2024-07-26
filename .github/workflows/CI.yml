@@ -3,6 +3,7 @@ env:
   DEBUG: napi:*
   APP_NAME: swc-query
   MACOSX_DEPLOYMENT_TARGET: '10.13'
+  BINDING_JS: binding.*
 permissions:
   contents: write
   id-token: write
@@ -144,7 +145,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ BINDING_JS }}
           if-no-files-found: error
   build-freebsd:
     runs-on: macos-13
@@ -190,7 +193,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-freebsd
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ BINDING_JS }}
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -444,7 +449,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-universal-apple-darwin
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ BINDING_JS }}
           if-no-files-found: error
   publish:
     name: Publish
