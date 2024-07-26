@@ -319,8 +319,6 @@ jobs:
         with:
           name: bindings-aarch64-unknown-linux-gnu
           path: .
-      - name: Build ts
-        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -329,6 +327,8 @@ jobs:
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "glibc"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -396,8 +396,6 @@ jobs:
         with:
           name: bindings-armv7-unknown-linux-gnueabihf
           path: .
-      - name: Build ts
-        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -405,6 +403,8 @@ jobs:
         run: |
           yarn config set supportedArchitectures.cpu "arm"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
