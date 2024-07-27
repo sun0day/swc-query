@@ -1,3 +1,3 @@
-# `swc-query-android-arm-eabi`
+# `js-audit-android-arm-eabi`
 
-This is the **armv7-linux-androideabi** binary for `swc-query`
+This is the **armv7-linux-androideabi** binary for `js-audit`

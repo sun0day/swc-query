@@ -1,3 +1,3 @@
-# `swc-query-darwin-universal`
+# `js-audit-darwin-universal`
 
-This is the **universal-apple-darwin** binary for `swc-query`
+This is the **universal-apple-darwin** binary for `js-audit`

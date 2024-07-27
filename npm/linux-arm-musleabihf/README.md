@@ -1,3 +1,3 @@
-# `swc-query-linux-arm-musleabihf`
+# `js-audit-linux-arm-musleabihf`
 
-This is the **armv7-unknown-linux-musleabihf** binary for `swc-query`
+This is the **armv7-unknown-linux-musleabihf** binary for `js-audit`

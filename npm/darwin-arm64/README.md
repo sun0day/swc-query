@@ -1,3 +1,3 @@
-# `swc-query-darwin-arm64`
+# `js-audit-darwin-arm64`
 
-This is the **aarch64-apple-darwin** binary for `swc-query`
+This is the **aarch64-apple-darwin** binary for `js-audit`

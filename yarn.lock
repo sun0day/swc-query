@@ -2574,9 +2574,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swc-query@workspace:.":
+"js-audit@workspace:.":
   version: 0.0.0-use.local
-  resolution: "swc-query@workspace:."
+  resolution: "js-audit@workspace:."
   dependencies:
     "@changesets/cli": "npm:^2.27.6"
     "@napi-rs/cli": "npm:^2.18.4"

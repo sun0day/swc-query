@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-android-arm64",
+  "name": "js-audit-android-arm64",
   "version": "0.0.0",
   "os": [
     "android"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "swc-query.android-arm64.node",
+  "main": "js-audit.android-arm64.node",
   "files": [
-    "swc-query.android-arm64.node"
+    "js-audit.android-arm64.node"
   ],
   "license": "MIT",
   "engines": {

@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-darwin-x64",
+  "name": "js-audit-darwin-x64",
   "version": "0.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "swc-query.darwin-x64.node",
+  "main": "js-audit.darwin-x64.node",
   "files": [
-    "swc-query.darwin-x64.node"
+    "js-audit.darwin-x64.node"
   ],
   "license": "MIT",
   "engines": {

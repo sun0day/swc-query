@@ -1,3 +1,3 @@
-# `swc-query-linux-x64-gnu`
+# `js-audit-linux-x64-gnu`
 
-This is the **x86_64-unknown-linux-gnu** binary for `swc-query`
+This is the **x86_64-unknown-linux-gnu** binary for `js-audit`

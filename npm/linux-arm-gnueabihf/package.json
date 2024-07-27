@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-linux-arm-gnueabihf",
+  "name": "js-audit-linux-arm-gnueabihf",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm"
   ],
-  "main": "swc-query.linux-arm-gnueabihf.node",
+  "main": "js-audit.linux-arm-gnueabihf.node",
   "files": [
-    "swc-query.linux-arm-gnueabihf.node"
+    "js-audit.linux-arm-gnueabihf.node"
   ],
   "license": "MIT",
   "engines": {

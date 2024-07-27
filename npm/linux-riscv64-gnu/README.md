@@ -1,3 +1,3 @@
-# `swc-query-linux-riscv64-gnu`
+# `js-audit-linux-riscv64-gnu`
 
-This is the **riscv64gc-unknown-linux-gnu** binary for `swc-query`
+This is the **riscv64gc-unknown-linux-gnu** binary for `js-audit`

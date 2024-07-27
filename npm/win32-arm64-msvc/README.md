@@ -1,3 +1,3 @@
-# `swc-query-win32-arm64-msvc`
+# `js-audit-win32-arm64-msvc`
 
-This is the **aarch64-pc-windows-msvc** binary for `swc-query`
+This is the **aarch64-pc-windows-msvc** binary for `js-audit`

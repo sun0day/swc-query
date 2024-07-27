@@ -1,3 +1,3 @@
-# `swc-query-linux-arm-gnueabihf`
+# `js-audit-linux-arm-gnueabihf`
 
-This is the **armv7-unknown-linux-gnueabihf** binary for `swc-query`
+This is the **armv7-unknown-linux-gnueabihf** binary for `js-audit`

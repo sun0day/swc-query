@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-darwin-arm64",
+  "name": "js-audit-darwin-arm64",
   "version": "0.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "swc-query.darwin-arm64.node",
+  "main": "js-audit.darwin-arm64.node",
   "files": [
-    "swc-query.darwin-arm64.node"
+    "js-audit.darwin-arm64.node"
   ],
   "license": "MIT",
   "engines": {

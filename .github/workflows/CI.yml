@@ -1,7 +1,7 @@
 name: CI
 env:
   DEBUG: napi:*
-  APP_NAME: swc-query
+  APP_NAME: js-audit
   MACOSX_DEPLOYMENT_TARGET: '10.13'
   BINDING_JS: binding.*
 permissions:

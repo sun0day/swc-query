@@ -1,5 +1,5 @@
 {
-  "name": "swc-query",
+  "name": "js-audit",
   "version": "0.0.0",
   "main": "index.js",
   "module": "index.js",
@@ -15,7 +15,7 @@
     "audit": "./bin/cmd.js"
   },
   "napi": {
-    "name": "swc-query",
+    "name": "js-audit",
     "triples": {
       "additional": [
         "aarch64-apple-darwin",
