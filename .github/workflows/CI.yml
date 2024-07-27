@@ -355,8 +355,6 @@ jobs:
         with:
           name: bindings-aarch64-unknown-linux-musl
           path: .
-      - name: Build ts
-        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -365,6 +363,8 @@ jobs:
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "musl"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
