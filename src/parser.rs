@@ -30,14 +30,31 @@ impl OxcParser {
 
   pub fn scan_file(&mut self, file: &str) -> Result<(), ScanError> {
     let file = reverse_backslash(file);
+    let relative_file = relative_path(&self.root, &file);
     let source_text = read_to_string(&absolute_path(&self.root, &file))
-      .map_err(|err| ScanError::FileReadError(format!("{}, reading {}", err.to_string(), file)))?;
+      .map_err(|err| ScanError::from_file_read(&err, &relative_file));
+
+    let source_text = match source_text {
+      Ok(text) => text,
+      Err(err) => {
+        self.collect_diagnostics(
+          &relative_file,
+          "",
+          vec![OxcDiagnostic::error(err.to_string())],
+        );
+        return Err(err);
+      }
+    };
+
     let source_type = SourceType::from_path(&file).unwrap();
     let allocator = Allocator::default();
     let ret = Parser::new(&allocator, &source_text, source_type).parse();
-    // println!("-----> s{}", relative_path(&self.root, &file));
+
     if !ret.errors.is_empty() {
-      self.collect_diagnostics(&relative_path(&self.root, &file), &source_text, ret.errors);
+      let err = Err(ScanError::from_syntax_parse(&ret.errors[0], &file));
+      self.collect_diagnostics(&relative_file, &source_text, ret.errors);
+
+      return err;
     }
 
     Ok(())
@@ -57,7 +74,7 @@ impl OxcParser {
 
   fn collect_diagnostics(&mut self, file: &str, source_text: &str, errors: Vec<OxcDiagnostic>) {
     let mut diagnostics =
-    DiagnosticService::wrap_diagnostics(Path::new(file), &source_text, errors);
+      DiagnosticService::wrap_diagnostics(Path::new(file), &source_text, errors);
     // println!("{:?}", &diagnostics);
     self.diagnostics.append(&mut diagnostics.1);
   }

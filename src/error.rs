@@ -1,3 +1,6 @@
+use std::io::Error;
+
+use oxc_diagnostics::OxcDiagnostic;
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]
@@ -8,10 +11,22 @@ pub enum ScanError {
   InvalidExtension(String),
 }
 
-// impl ScanError {
-//   pub fn unwrap(self) -> String {
-//     match self {
-//       Self::FileNotFound(msg) | Self::SyntaxError(msg) | Self::InvalidExtension(msg) => msg,
-//     }
-//   }
-// }
+impl ToString for ScanError {
+  fn to_string(&self) -> String {
+    match self {
+      Self::FileReadError(msg) | Self::SyntaxError(msg) | Self::InvalidExtension(msg) => {
+        msg.to_string()
+      }
+    }
+  }
+}
+
+impl ScanError {
+  pub(crate) fn from_file_read(err: &Error, file: &str) -> Self {
+    Self::FileReadError(format!("{}, reading {}", err, file))
+  }
+
+  pub(crate) fn from_syntax_parse(err: &OxcDiagnostic, file: &str) -> Self {
+    Self::SyntaxError(format!("{}, parsing {}", err, file))
+  }
+}
