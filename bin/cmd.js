@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { Command } = require('commander');
 const {Scanner} = require('../index.js')
 const pkgJson = require('../package.json')
