@@ -479,7 +479,9 @@ jobs:
         with:
           path: artifacts
       - name: Move artifacts
-        run: yarn artifacts
+        run: |
+          mv artifacts/bindings-aarch64-apple-darwin/binding.* .
+          yarn artifacts
       - name: List packages
         run: ls -R ./npm
         shell: bash
