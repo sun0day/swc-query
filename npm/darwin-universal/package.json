@@ -1,12 +1,12 @@
 {
-  "name": "swc-query-darwin-universal",
+  "name": "js-audit-darwin-universal",
   "version": "0.0.0",
   "os": [
     "darwin"
   ],
-  "main": "swc-query.darwin-universal.node",
+  "main": "js-audit.darwin-universal.node",
   "files": [
-    "swc-query.darwin-universal.node"
+    "js-audit.darwin-universal.node"
   ],
   "license": "MIT",
   "engines": {

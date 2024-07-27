@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-linux-arm64-musl",
+  "name": "js-audit-linux-arm64-musl",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "swc-query.linux-arm64-musl.node",
+  "main": "js-audit.linux-arm64-musl.node",
   "files": [
-    "swc-query.linux-arm64-musl.node"
+    "js-audit.linux-arm64-musl.node"
   ],
   "license": "MIT",
   "engines": {

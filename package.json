@@ -1,10 +1,21 @@
 {
-  "name": "swc-query",
+  "name": "js-audit",
   "version": "0.0.0",
   "main": "index.js",
+  "module": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "binding.js",
+    "binding.d.ts",
+    "index.js",
+    "index.d.ts",
+    "bin"
+  ],
+  "bin": {
+    "audit": "./bin/cmd.js"
+  },
   "napi": {
-    "name": "swc-query",
+    "name": "js-audit",
     "triples": {
       "additional": [
         "aarch64-apple-darwin",
@@ -26,23 +37,27 @@
   "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.27.6",
-    "@napi-rs/cli": "^2.18.3",
-    "ava": "^6.0.1"
-  },
-  "ava": {
-    "timeout": "3m"
+    "@napi-rs/cli": "^2.18.4",
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.4"
   },
   "engines": {
     "node": ">= 10"
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
+    "build": "yarn build:crate && yarn build:ts",
+    "build:crate": "napi build --platform --release --dts binding.d.ts --js binding.js",
     "build:debug": "napi build --platform",
+    "build:ts": "tsc",
     "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava",
+    "test": "vitest run",
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.3.1"
+  "packageManager": "yarn@4.3.1",
+  "dependencies": {
+    "commander": "^12.1.0"
+  }
 }

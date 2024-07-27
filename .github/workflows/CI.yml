@@ -1,8 +1,9 @@
 name: CI
 env:
   DEBUG: napi:*
-  APP_NAME: swc-query
+  APP_NAME: js-audit
   MACOSX_DEPLOYMENT_TARGET: '10.13'
+  BINDING_JS: binding.*
 permissions:
   contents: write
   id-token: write
@@ -27,61 +28,61 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: yarn build --target x86_64-apple-darwin
+            build: yarn build:crate --target x86_64-apple-darwin
           - host: windows-latest
-            build: yarn build --target x86_64-pc-windows-msvc
+            build: yarn build:crate --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
-              yarn build --target i686-pc-windows-msvc
+              yarn build:crate --target i686-pc-windows-msvc && yarn build:ts
               yarn test
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            build: yarn build --target x86_64-unknown-linux-gnu
+            build: yarn build:crate --target x86_64-unknown-linux-gnu
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: yarn build --target x86_64-unknown-linux-musl
+            build: yarn build:crate --target x86_64-unknown-linux-musl
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: yarn build --target aarch64-apple-darwin
+            build: yarn build:crate --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
-            build: yarn build --target aarch64-unknown-linux-gnu
+            build: yarn build:crate --target aarch64-unknown-linux-gnu
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf -y
-            build: yarn build --target armv7-unknown-linux-gnueabihf
+            build: yarn build:crate --target armv7-unknown-linux-gnueabihf
           - host: ubuntu-latest
             target: armv7-unknown-linux-musleabihf
-            build: yarn build --target armv7-unknown-linux-musleabihf
+            build: yarn build:crate --target armv7-unknown-linux-musleabihf
           - host: ubuntu-latest
             target: aarch64-linux-android
-            build: yarn build --target aarch64-linux-android
+            build: yarn build:crate --target aarch64-linux-android
           - host: ubuntu-latest
             target: armv7-linux-androideabi
-            build: yarn build --target armv7-linux-androideabi
+            build: yarn build:crate --target armv7-linux-androideabi
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
             build: |-
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
-              yarn build --target aarch64-unknown-linux-musl
+              yarn build:crate --target aarch64-unknown-linux-musl
           - host: windows-latest
             target: aarch64-pc-windows-msvc
-            build: yarn build --target aarch64-pc-windows-msvc
+            build: yarn build:crate --target aarch64-pc-windows-msvc
           - host: ubuntu-latest
             target: riscv64gc-unknown-linux-gnu
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-riscv64-linux-gnu -y
-            build: yarn build --target riscv64gc-unknown-linux-gnu
+            build: yarn build:crate --target riscv64gc-unknown-linux-gnu
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -144,7 +145,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ env.BINDING_JS }}
           if-no-files-found: error
   build-freebsd:
     runs-on: macos-13
@@ -159,7 +162,7 @@ jobs:
           RUSTUP_IO_THREADS: 1
         with:
           operating_system: freebsd
-          version: '13.2'
+          version: '14.0'
           memory: 8G
           cpu_count: 3
           environment_variables: DEBUG RUSTUP_IO_THREADS
@@ -183,7 +186,6 @@ jobs:
             freebsd-version
             yarn install
             yarn build
-            yarn test
             rm -rf node_modules
             rm -rf target
             rm -rf .yarn/cache
@@ -191,7 +193,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-freebsd
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ env.BINDING_JS }}
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -224,6 +228,8 @@ jobs:
         with:
           name: bindings-${{ matrix.settings.target }}
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -254,6 +260,8 @@ jobs:
         with:
           name: bindings-x86_64-unknown-linux-gnu
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -286,6 +294,8 @@ jobs:
         with:
           name: bindings-x86_64-unknown-linux-musl
           path: .
+      - name: Build ts
+        run: yarn build:ts
       - name: List packages
         run: ls -R .
         shell: bash
@@ -317,6 +327,8 @@ jobs:
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "glibc"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -351,6 +363,8 @@ jobs:
           yarn config set supportedArchitectures.cpu "arm64"
           yarn config set supportedArchitectures.libc "musl"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -389,6 +403,8 @@ jobs:
         run: |
           yarn config set supportedArchitectures.cpu "arm"
           yarn install
+      - name: Build ts
+        run: yarn build:ts
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -433,7 +449,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-universal-apple-darwin
-          path: ${{ env.APP_NAME }}.*.node
+          path: |
+            ${{ env.APP_NAME }}.*.node
+            ${{ env.BINDING_JS }}
           if-no-files-found: error
   publish:
     name: Publish
@@ -461,10 +479,14 @@ jobs:
         with:
           path: artifacts
       - name: Move artifacts
-        run: yarn artifacts
+        run: |
+          mv artifacts/bindings-aarch64-apple-darwin/binding.* .
+          yarn artifacts
       - name: List packages
         run: ls -R ./npm
         shell: bash
+      - name: Build ts
+        run: yarn build:ts
       - name: Publish
         run: |
           npm config set provenance true

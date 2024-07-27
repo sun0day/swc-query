@@ -1,5 +1,5 @@
 {
-  "name": "swc-query-android-arm-eabi",
+  "name": "js-audit-android-arm-eabi",
   "version": "0.0.0",
   "os": [
     "android"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm"
   ],
-  "main": "swc-query.android-arm-eabi.node",
+  "main": "js-audit.android-arm-eabi.node",
   "files": [
-    "swc-query.android-arm-eabi.node"
+    "js-audit.android-arm-eabi.node"
   ],
   "license": "MIT",
   "engines": {

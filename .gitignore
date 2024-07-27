@@ -196,3 +196,8 @@ Cargo.lock
 
 *.node
 *.swp
+
+# built files
+binding.d.ts
+binding.js
+index.js

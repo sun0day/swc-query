@@ -1,3 +1,3 @@
-# `swc-query-linux-x64-musl`
+# `js-audit-linux-x64-musl`
 
-This is the **x86_64-unknown-linux-musl** binary for `swc-query`
+This is the **x86_64-unknown-linux-musl** binary for `js-audit`
