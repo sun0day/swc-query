@@ -1672,6 +1672,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-audit@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "js-audit@workspace:."
+  dependencies:
+    "@changesets/cli": "npm:^2.27.6"
+    "@napi-rs/cli": "npm:^2.18.4"
+    "@types/node": "npm:^20.14.11"
+    commander: "npm:^12.1.0"
+    typescript: "npm:^5.5.3"
+    vitest: "npm:^2.0.4"
+  bin:
+    audit: ./bin/cmd.js
+  languageName: unknown
+  linkType: soft
+
 "js-yaml@npm:^3.13.0, js-yaml@npm:^3.13.1, js-yaml@npm:^3.6.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
@@ -2573,19 +2588,6 @@ __metadata:
   checksum: 10c0/6ae5ff319bfbb021f8a86da8ea1f8db52fac8bd4d499492e30ec17095b58af11f0c55f8577390a749b1c4dde691b6a0315dab78f5f54c9b3d83f8fb5905c1c05
   languageName: node
   linkType: hard
-
-"js-audit@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "js-audit@workspace:."
-  dependencies:
-    "@changesets/cli": "npm:^2.27.6"
-    "@napi-rs/cli": "npm:^2.18.4"
-    "@types/node": "npm:^20.14.11"
-    commander: "npm:^12.1.0"
-    typescript: "npm:^5.5.3"
-    vitest: "npm:^2.0.4"
-  languageName: unknown
-  linkType: soft
 
 "tar@npm:^6.1.11, tar@npm:^6.2.1":
   version: 6.2.1
