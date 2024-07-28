@@ -51,6 +51,7 @@
     "build:crate": "napi build --platform --release --dts binding.d.ts --js binding.js",
     "build:debug": "napi build --platform",
     "build:ts": "tsc",
+    "lint:fix": "cargo fmt",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "vitest run",
     "universal": "napi universal",

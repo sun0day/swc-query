@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest'
-import {audit, getSnapshotFile, isWin} from '../test-utils'
+import {audit, getSnapshotFile, isWin} from '../utils'
 
 describe('test error report', () => {
   it('should report syntax error', () => {

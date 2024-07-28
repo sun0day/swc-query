@@ -61,6 +61,11 @@ impl OxcParser {
   }
 
   pub fn report(&mut self) {
+    if self.diagnostics.is_empty() {
+      self.writer.write_all("All good, no security issues found!".as_bytes()).unwrap();
+      return;
+    }
+
     let handler = GraphicalReportHandler::new();
     let mut out = String::new();
 

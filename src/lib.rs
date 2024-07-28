@@ -1,8 +1,10 @@
 #![deny(clippy::all)]
 
+mod env;
 mod error;
-mod parser;
 mod path;
+mod parser;
+// mod rules;
 use napi::bindgen_prelude::Buffer;
 use parser::OxcParser;
 
