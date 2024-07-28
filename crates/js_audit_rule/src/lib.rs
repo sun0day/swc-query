@@ -49,6 +49,9 @@ pub fn js_audit_rule_derive(input: TokenStream) -> TokenStream {
                     ..Self::default()
                 }
             }
+            pub(crate) fn visit(&mut self, program: &Program) {
+                self.visit_program(program);
+            }
             pub(crate) fn hit_env(&self, e: Option<&str>) -> bool {
                 RuleEnv::hit(&self.envs, e)
             }

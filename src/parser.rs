@@ -12,6 +12,7 @@ use oxc_span::SourceType;
 
 use crate::error::ScanError;
 use crate::path::{absolute_path, relative_path, reverse_backslash};
+use crate::rules::cwe_284::aws_apigateway_public_api::AwsAPIGatewayPublicAPIRule;
 
 pub struct OxcParser {
   root: String,
@@ -57,12 +58,19 @@ impl OxcParser {
       return err;
     }
 
+    let mut rule = AwsAPIGatewayPublicAPIRule::new();
+    rule.visit(&ret.program);
+    self.collect_diagnostics(&relative_file, &source_text, rule.diagnostics);
+
     Ok(())
   }
 
   pub fn report(&mut self) {
     if self.diagnostics.is_empty() {
-      self.writer.write_all("All good, no security issues found!".as_bytes()).unwrap();
+      self
+        .writer
+        .write_all("All good, no security issues found!".as_bytes())
+        .unwrap();
       return;
     }
 

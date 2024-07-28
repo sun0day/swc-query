@@ -14,5 +14,5 @@ export const audit = (file: string) => {
 }
 
 export const getSnapshotFile = (file: string) => {
-  return getPath(file.replace(/\.js$/, '.snapshot'))
+  return getPath(file.replace(/\.(js|ts)$/, '.snapshot').replace(/\/code\//, "/expected/"))
 }

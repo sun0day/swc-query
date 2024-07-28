@@ -2,9 +2,9 @@
 
 mod env;
 mod error;
-mod path;
 mod parser;
-// mod rules;
+mod path;
+mod rules;
 use napi::bindgen_prelude::Buffer;
 use parser::OxcParser;
 
