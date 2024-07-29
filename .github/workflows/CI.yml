@@ -28,7 +28,9 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: yarn build:crate --target x86_64-apple-darwin
+            build: |
+              yarn build:crate --target x86_64-apple-darwin
+              yarn test:crate
           - host: windows-latest
             build: yarn build:crate --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
