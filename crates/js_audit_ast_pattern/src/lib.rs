@@ -1,6 +1,8 @@
 use regex::Regex;
 
 const BASE_REG:&str = r"([a-zA-Z0-9_-].+|\$\(.+?\))";
+const REG_PREFIX:&str = r"$(";
+const REG_SUFFIX:&str = r")";
 
 #[derive(Debug, PartialEq)]
 pub struct StaticMemberExpressionPattern {
@@ -24,6 +26,13 @@ pub trait Pattern {
   fn build(pattern: &str) -> Result<Self, String>
   where
     Self: Sized;
+
+  fn unwrap(s: &str) -> String {
+    match s.starts_with(REG_PREFIX) {
+      true => s.strip_prefix(REG_PREFIX).unwrap().strip_suffix(REG_SUFFIX).unwrap().to_owned(),
+      false => s.to_owned()
+    }
+  }
 }
 
 impl Pattern for StaticMemberExpressionPattern {
@@ -32,8 +41,8 @@ impl Pattern for StaticMemberExpressionPattern {
     match re.captures(pattern) {
       Some(caps)=> {
         Ok(Self {
-          object: caps[1].to_string(),
-          property: caps[2].to_string()
+          object: Self::unwrap(&caps[1]),
+          property: Self::unwrap(&caps[2]),
         })
       },
       None => {
@@ -70,10 +79,10 @@ mod tests {
       property: "pP1".to_owned()
     }));
 
-    let pattern = StaticMemberExpressionPattern::build("$(.+).$(.+)");
+    let pattern = StaticMemberExpressionPattern::build(r"$(.+).$(\()");
     assert_eq!(pattern, Ok(StaticMemberExpressionPattern {
-      object: "$(.+)".to_owned(),
-      property: "$(.+)".to_owned()
+      object: r".+".to_owned(),
+      property: r"\(".to_owned()
     }));
 
     let pattern = StaticMemberExpressionPattern::build("$(.+)");
